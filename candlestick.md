@@ -63,3 +63,15 @@ Certainly! Let's compare Doji patterns and Spinning Tops in candlestick charts:
 - **Role:** Spinning Tops are used by traders and analysts to identify periods of uncertainty and potential shifts in market dynamics. They are often part of larger candlestick patterns.
 
 In summary, both Doji patterns and Spinning Tops are candlestick formations that indicate market indecision and the potential for trend reversals. Doji patterns are more specific and tend to be stronger reversal signals, while Spinning Tops are more general and represent uncertainty. Traders use both patterns to make trading decisions, but they consider Doji patterns as more decisive signals.
+
+
+![image](https://github.com/us254/forex/assets/88821507/e1225433-4994-474b-9e5b-41af608b3932)
+
+![image](https://github.com/us254/forex/assets/88821507/8d71746d-3c4f-4a8c-819a-065c9b2b39b6)
+
+![image](https://github.com/us254/forex/assets/88821507/c1bcfbe1-c5a7-4549-821d-34bc4f2a220f)
+![image](https://github.com/us254/forex/assets/88821507/a7dbab28-b950-49b7-a84c-02b3194e3999)
+
+
+
+
