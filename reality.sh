@@ -111,7 +111,7 @@ SHORT_ID=$(openssl rand -hex 8)
 # Generate WireGuard settings
 WIREGUARD_OUTPUT=$(curl -sLo warp-reg https://github.com/badafans/warp-reg/releases/download/v1.0/main-linux-amd64 && chmod +x warp-reg && ./warp-reg && rm warp-reg)
 PRIVATE_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'private_key: ' '{print $2}' | awk '{print $1}')
-PUBLIC_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'public_key: ' '{print $2}' | awk '{print $1}')
+PRIVATE_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'private_key: ' '{print $2}' | awk '{print $1}')
 IPV4_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v4: ' '{print $2}' | awk '{print $1}')
 IPV6_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v6: ' '{print $2}' | awk '{print $1}')
 ENDPOINT=$(echo "$WIREGUARD_OUTPUT" | awk -F 'endpoint: ' '{print $2}' | awk '{print $1}')
@@ -119,10 +119,13 @@ RESERVED_VALUES=$(echo "$WIREGUARD_OUTPUT" | awk -F 'reserved: ' '{print $2}' | 
 # Load your configuration file
 CONFIG=$(cat /usr/local/etc/xray/config.json)
 # Replace placeholders with actual values
+
 CONFIG=${CONFIG//<uuid>/$UUID}
 CONFIG=${CONFIG//<private_key>/$PRIVATE_KEY_XRAY}
 CONFIG=${CONFIG//<public_key>/$PUBLIC_KEY_XRAY}
 CONFIG=${CONFIG//<shortId>/$SHORT_ID}
+CONFIG=${CONFIG//<private_key_wireguard>/$PRIVATE_KEY_WIREGUARD}
+CONFIG=${CONFIG//<private_key_wireguard>/$PRIVATE_KEY_WIREGUARD}
 CONFIG=${CONFIG//<ipv4_address>/$IPV4_ADDRESS}
 CONFIG=${CONFIG//<ipv6_address>/$IPV6_ADDRESS}
 CONFIG=${CONFIG//<endpoint>/$ENDPOINT}
@@ -136,7 +139,7 @@ CONFIG=$(cat /usr/local/etc/xray/client.json)
 
 # Assuming you have the values in the variables UUID, PUBLIC_KEY_XRAY, and SHORT_ID
 # Replace placeholders with actual values
-CONFIG//\$UUID/"$UUID"}
+CONFIG=${CONFIG//\$UUID/$UUID}
 CONFIG=${CONFIG//\$PUBLIC_KEY_XRAY/$PUBLIC_KEY_XRAY}
 CONFIG=${CONFIG//\$SHORT_ID/$SHORT_ID}
 
