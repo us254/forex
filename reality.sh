@@ -28,47 +28,66 @@ sudo ufw allow 3345/tcp
 sudo ufw reload
 # Install Xray
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u root
+
 # Change directory to Xray's directory
-cd /usr/local/share/xray/
+( 
+cd /usr/local/share/xray/ || exit
 # Remove old geosite.dat and geoip.dat files
-sudo rm -f /usr/local/share/xray/geosite.dat
-sudo rm -f /usr/local/share/xray/geoip.dat
+sudo rm -f geosite.dat
+sudo rm -f geoip.dat
 # Download new geosite.dat and geoip.dat files
 sudo wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202310212207/geosite.dat
 sudo wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202310212207/geoip.dat
 # Download ir.dat file
 sudo wget https://github.com/us254/geoip/releases/download/v2.6.9/ir.dat
-# Change directory to home
-cd ~
+)
+
 # Open the Xray service configuration file and add the environment variable
 sudo bash -c 'echo Environment="XRAY_BUF_SPLICE=enable" >> /etc/systemd/system/xray.service'
+
 # Reload the systemd manager configuration
 sudo systemctl daemon-reload
+
 # Restart the Xray service to apply the changes
 sudo systemctl restart xray.service
+
 # Download and install Go
-curl -sLo go.tar.gz https://go.dev/dl/$(curl -sL https://golang.org/VERSION?m=text|head -1).linux-amd64.tar.gz
+curl -sLo go.tar.gz "https://go.dev/dl/$(curl -sL https://golang.org/VERSION?m=text|head -1).linux-amd64.tar.gz"
 rm -rf /usr/local/go
 tar -C /usr/local/ -xzf go.tar.gz
 rm go.tar.gz
+
 # Set up Go environment variable
 echo -e "export PATH=$PATH:/usr/local/go/bin" > /etc/profile.d/go.sh
-source /etc/profile.d/go.sh
+
+# Check if /etc/profile.d/go.sh is readable and source it if it is
+if [ -r /etc/profile.d/go.sh ]; then
+    source /etc/profile.d/go.sh
+else
+    echo "Cannot read /etc/profile.d/go.sh" >&2
+    exit 1
+fi
 # Verify Go installation
 go version
 # Install git
 apt install -y git
 # Clone Xray-core repository
 git clone https://github.com/XTLS/Xray-core.git
-cd Xray-core
+
+# Change to Xray-core directory, perform operations, then automatically return to previous directory
+(
+cd Xray-core || exit
 # Download Go modules for the project
 go mod download
 # Set Go environment variables for the build
 go env -w CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOAMD64=v2
 # Build the project
 go build -v -o xray -trimpath -ldflags "-s -w -buildid=" ./main
-# Change to the parent directory
-cd ..
+)
+
+# No need to do 'cd ..' as we are back in the original directory after the subshell
+
+# Stop the xray service
 sudo systemctl stop xray.service
 # Remove the old xray executable if it exists
 sudo rm -f /usr/local/bin/xray
@@ -76,7 +95,9 @@ sudo rm -f /usr/local/bin/xray
 cp -f Xray-core/xray /usr/local/bin/
 # Make the xray executable
 chmod +x /usr/local/bin/xray
-cd /usr/local/bin/xray
+# Change directory to /usr/local/bin/xray and perform operations
+(
+cd /usr/local/bin/xray || exit
 # Fetch the configuration file from the remote server
 curl -o /usr/local/etc/xray/config.json https://raw.githubusercontent.com/us254/forex/main/config.json
 # Generate UUID
@@ -115,9 +136,11 @@ CONFIG=$(cat /usr/local/etc/xray/client.json)
 
 # Assuming you have the values in the variables UUID, PUBLIC_KEY_XRAY, and SHORT_ID
 # Replace placeholders with actual values
-CONFIG=${CONFIG//\$UUID/$UUID}
+CONFIG//\$UUID/$UUID}
 CONFIG=${CONFIG//\$PUBLIC_KEY_XRAY/$PUBLIC_KEY_XRAY}
 CONFIG=${CONFIG//\$SHORT_ID/$SHORT_ID}
 
 # Save the updated configuration back to the file
 echo "$CONFIG" > /usr/local/etc/xray/client.json
+)
+
