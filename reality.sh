@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # Update system packages
 sudo apt update
 # Upgrade system packages
