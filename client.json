@@ -55,6 +55,7 @@
       "tag": "dns-in"
     }
   ],
+ {
   "outbounds": [
     {
       "protocol": "vless",
@@ -65,7 +66,7 @@
             "port": 443,
             "users": [
               {
-                "id": "<UUID>",
+                "id": "$UUID",
                 "encryption": "none",
                 "flow": "xtls-rprx-vision"
               }
@@ -79,8 +80,8 @@
         "realitySettings": {
           "fingerprint": "chrome",
           "serverName": "tsgproadvisor.com",
-          "publicKey": "<PUBLIC_KEY_XRAY>",
-          "shortId": "<SHORT_ID>"
+          "publicKey": "$PUBLIC_KEY_XRAY",
+          "shortId": "$SHORT_ID"
         }
       },
       "mux": {
