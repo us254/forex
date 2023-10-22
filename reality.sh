@@ -134,7 +134,7 @@ CONFIG=${CONFIG//<reserved_values>/$RESERVED_VALUES}
 # Save the updated configuration back to the file
 echo "$CONFIG" > /usr/local/etc/xray/config.json
 # Fetch the configuration file from the remote server
-curl -o /usr/local/etc/xray https://raw.githubusercontent.com/us254/forex/main/client.json
+curl -o /usr/local/etc/xray/client.json https://raw.githubusercontent.com/us254/forex/main/client.json
 # Load your configuration file
 CONFIG=$(cat /usr/local/etc/xray/client.json)
 
