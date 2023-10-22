@@ -98,7 +98,7 @@ cp -f Xray-core/xray /usr/local/bin/
 chmod +x /usr/local/bin/xray
 # Change directory to /usr/local/bin/xray and perform operations
 (
-cd /usr/local/bin/xray || exit
+cd /usr/local/bin || exit
 # Fetch the configuration file from the remote server
 curl -o /usr/local/etc/xray/config.json https://raw.githubusercontent.com/us254/forex/main/config.json
 # Generate UUID
