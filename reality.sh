@@ -100,7 +100,7 @@ chmod +x /usr/local/bin/xray
 (
 cd /usr/local/bin || exit
 # Fetch the configuration file from the remote server
-curl -o /usr/local/etc/xray/config.json https://raw.githubusercontent.com/us254/forex/main/config.json
+curl -o /usr/local/etc/xray https://raw.githubusercontent.com/us254/forex/main/config.json
 # Generate UUID
 UUID=$(./xray uuid)
 # Generate keys for Xray
