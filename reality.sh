@@ -69,6 +69,7 @@ go env -w CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOAMD64=v2
 go build -v -o xray -trimpath -ldflags "-s -w -buildid=" ./main
 # Change to the parent directory
 cd ..
+sudo systemctl stop xray.service
 # Remove the old xray executable if it exists
 sudo rm -f /usr/local/bin/xray
 # Copy the built xray executable to /usr/local/bin/
