@@ -112,6 +112,7 @@ SHORT_ID=$(openssl rand -hex 8)
 # Generate WireGuard settings
 WIREGUARD_OUTPUT=$(curl -sLo warp-reg https://github.com/badafans/warp-reg/releases/download/v1.0/main-linux-amd64 && chmod +x warp-reg && ./warp-reg && rm warp-reg)
 PRIVATE_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'private_key: ' '{print $2}' | awk '{print $1}' | xargs)
+PUBLIC_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'public_key: ' '{print $2}' | awk '{print $1}' | xargs)
 IPV4_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v4: ' '{print $2}' | awk '{print $1}' | xargs)
 IPV6_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v6: ' '{print $2}' | awk '{print $1}' | xargs)
 ENDPOINT=$(echo "$WIREGUARD_OUTPUT" | awk -F 'endpoint: ' '{print $2}' | awk '{print $1}' | xargs)
@@ -125,7 +126,7 @@ CONFIG=${CONFIG//\$PRIVATE_KEY_XRAY/$PRIVATE_KEY_XRAY}
 CONFIG=${CONFIG//\$PUBLIC_KEY_XRAY/$PUBLIC_KEY_XRAY}
 CONFIG=${CONFIG//\$SHORT_ID/$SHORT_ID}
 CONFIG=${CONFIG//\$PRIVATE_KEY_WIREGUARD/$PRIVATE_KEY_WIREGUARD}
-CONFIG=${CONFIG//\$PRIVATE_KEY_WIREGUARD/$PRIVATE_KEY_WIREGUARD}
+CONFIG=${CONFIG//\$PUBLIC_KEY_WIREGUARD/$PUBLIC_KEY_WIREGUARD}
 CONFIG=${CONFIG//\$IPV4_ADDRESS/$IPV4_ADDRESS}
 CONFIG=${CONFIG//\$IPV6_ADDRESS/$IPV6_ADDRESS}
 CONFIG=${CONFIG//\$ENDPOINT/$ENDPOINT}
