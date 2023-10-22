@@ -104,18 +104,18 @@ curl -o /usr/local/etc/xray/config.json https://raw.githubusercontent.com/us254/
 UUID=$(./xray uuid)
 # Generate keys for Xray
 KEY_OUTPUT=$(./xray x25519)
-PRIVATE_KEY_XRAY=$(echo $KEY_OUTPUT | awk -F 'Private key: ' '{print $2}' | awk '{print $1}')
-PUBLIC_KEY_XRAY=$(echo $KEY_OUTPUT | awk -F 'Public key: ' '{print $2}' | awk '{print $1}')
+PRIVATE_KEY_XRAY=$(echo "$KEY_OUTPUT" | awk -F 'Private key: ' '{print $2}' | awk '{print $1}')
+PUBLIC_KEY_XRAY=$(echo "$KEY_OUTPUT" | awk -F 'Public key: ' '{print $2}' | awk '{print $1}')
 # Generate short ID
 SHORT_ID=$(openssl rand -hex 8)
 # Generate WireGuard settings
 WIREGUARD_OUTPUT=$(curl -sLo warp-reg https://github.com/badafans/warp-reg/releases/download/v1.0/main-linux-amd64 && chmod +x warp-reg && ./warp-reg && rm warp-reg)
-PRIVATE_KEY_WIREGUARD=$(echo $WIREGUARD_OUTPUT | awk -F 'private_key: ' '{print $2}' | awk '{print $1}')
-PUBLIC_KEY_WIREGUARD=$(echo $WIREGUARD_OUTPUT | awk -F 'public_key: ' '{print $2}' | awk '{print $1}')
-IPV4_ADDRESS=$(echo $WIREGUARD_OUTPUT | awk -F 'v4: ' '{print $2}' | awk '{print $1}')
-IPV6_ADDRESS=$(echo $WIREGUARD_OUTPUT | awk -F 'v6: ' '{print $2}' | awk '{print $1}')
-ENDPOINT=$(echo $WIREGUARD_OUTPUT | awk -F 'endpoint: ' '{print $2}' | awk '{print $1}')
-RESERVED_VALUES=$(echo $WIREGUARD_OUTPUT | awk -F 'reserved: ' '{print $2}' | awk -F 'v4: ' '{print $1}')
+PRIVATE_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'private_key: ' '{print $2}' | awk '{print $1}')
+PUBLIC_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'public_key: ' '{print $2}' | awk '{print $1}')
+IPV4_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v4: ' '{print $2}' | awk '{print $1}')
+IPV6_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v6: ' '{print $2}' | awk '{print $1}')
+ENDPOINT=$(echo "$WIREGUARD_OUTPUT" | awk -F 'endpoint: ' '{print $2}' | awk '{print $1}')
+RESERVED_VALUES=$(echo "$WIREGUARD_OUTPUT" | awk -F 'reserved: ' '{print $2}' | awk -F 'v4: ' '{print $1}')
 # Load your configuration file
 CONFIG=$(cat /usr/local/etc/xray/config.json)
 # Replace placeholders with actual values
@@ -136,11 +136,10 @@ CONFIG=$(cat /usr/local/etc/xray/client.json)
 
 # Assuming you have the values in the variables UUID, PUBLIC_KEY_XRAY, and SHORT_ID
 # Replace placeholders with actual values
-CONFIG//\$UUID/$UUID}
+CONFIG//\$UUID/"$UUID"}
 CONFIG=${CONFIG//\$PUBLIC_KEY_XRAY/$PUBLIC_KEY_XRAY}
 CONFIG=${CONFIG//\$SHORT_ID/$SHORT_ID}
 
 # Save the updated configuration back to the file
 echo "$CONFIG" > /usr/local/etc/xray/client.json
 )
-
