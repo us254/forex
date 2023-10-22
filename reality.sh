@@ -107,3 +107,16 @@ CONFIG=${CONFIG//<endpoint>/$ENDPOINT}
 CONFIG=${CONFIG//<reserved_values>/$RESERVED_VALUES}
 # Save the updated configuration back to the file
 echo "$CONFIG" > /usr/local/etc/xray/config.json
+# Fetch the configuration file from the remote server
+curl -o /usr/local/etc/xray/config.json https://raw.githubusercontent.com/us254/forex/main/client.json
+# Load your configuration file
+CONFIG=$(cat /usr/local/etc/xray/client.json)
+
+# Assuming you have the values in the variables UUID, PUBLIC_KEY_XRAY, and SHORT_ID
+# Replace placeholders with actual values
+CONFIG=${CONFIG//\$UUID/$UUID}
+CONFIG=${CONFIG//\$PUBLIC_KEY_XRAY/$PUBLIC_KEY_XRAY}
+CONFIG=${CONFIG//\$SHORT_ID/$SHORT_ID}
+
+# Save the updated configuration back to the file
+echo "$CONFIG" > /usr/local/etc/xray/client.json
