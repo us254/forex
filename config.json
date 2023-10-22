@@ -1,127 +1,130 @@
-{
-  "log": {
-    "loglevel": "info"
-  },
-  "routing": {
-    "domainStrategy": "IPIfNonMatch",
-    "domainMatcher": "hybrid",
-    "rules": [
-      {
-        "type": "field",
-        "ip": [
-          "ext:ir.dat:ir"
-        ],
-        "outboundTag": "block"
-      },
-      {
-        "type": "field",
-        "domain": [
-          "geosite:openai",
-          "windscribe.com",
-          "t-mobile.com"
-        ],
-        "outboundTag": "w6"
-      },
-      {
-        "type": "field",
-        "ip": [
-          "::/0"
-        ],
-        "outboundTag": "v6"
-      }
-    ]
-  },
- {
-  "inbounds": [
-    {
-      "listen": "0.0.0.0",
-      "port": 443,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "$UUID",
-            "flow": "xtls-rprx-vision"
-          }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "reality",
-        "realitySettings": {
-          "dest": "tsgproadvisor.com:443",
-          "serverNames": [
-            "tsgproadvisor.com"
+[
+  {
+    "log": {
+      "loglevel": "info"
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "domainMatcher": "hybrid",
+      "rules": [
+        {
+          "type": "field",
+          "ip": [
+            "ext:ir.dat:ir"
           ],
-          "privateKey": "$PRIVATE_KEY_XRAY",
-          "shortIds": [
-            "$SHORT_ID"
+          "outboundTag": "block"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:openai",
+            "windscribe.com",
+            "t-mobile.com"
+          ],
+          "outboundTag": "w6"
+        },
+        {
+          "type": "field",
+          "ip": [
+            "::/0"
+          ],
+          "outboundTag": "v6"
+        }
+      ]
+    }
+  },
+  {
+    "inbounds": [
+      {
+        "listen": "0.0.0.0",
+        "port": 443,
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {
+              "id": "$UUID",
+              "flow": "xtls-rprx-vision"
+            }
+          ],
+          "decryption": "none"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "reality",
+          "realitySettings": {
+            "dest": "tsgproadvisor.com:443",
+            "serverNames": [
+              "tsgproadvisor.com"
+            ],
+            "privateKey": "$PRIVATE_KEY_XRAY",
+            "shortIds": [
+              "$SHORT_ID"
+            ]
+          }
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
           ]
         }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls",
-          "quic"
-        ]
       }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "tag": "direct"
-    },
-    {
-      "protocol": "freedom",
-      "streamSettings": {
-        "sockopt": {
-          "domainStrategy": "UseIPv6"
-        }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "tag": "direct"
       },
-      "tag": "v6"
-    },
-    {
-      "protocol": "freedom",
-      "streamSettings": {
-        "sockopt": {
-          "domainStrategy": "UseIPv6",
-          "dialerProxy": "wireguard"
-        }
-      },
-      "tag": "w6"
-    },
-    {
-      "protocol": "wireguard",
-      "settings": {
-        "secretKey": "$PRIVATE_KEY_WIREGUARD",
-        "address": [
-          "$IPV4_ADDRESS",
-          "$IPV6_ADDRESS"
-        ],
-        "peers": [
-          {
-            "publicKey": "$PUBLIC_KEY_WIREGUARD",
-            "allowedIPs": [
-              "0.0.0.0/0",
-              "::/0"
-            ],
-            "endpoint": "$ENDPOINT"
+      {
+        "protocol": "freedom",
+        "streamSettings": {
+          "sockopt": {
+            "domainStrategy": "UseIPv6"
           }
-        ],
-        "reserved": [
-          "$RESERVED_VALUES"
-        ],
-        "mtu": 1280
+        },
+        "tag": "v6"
       },
-      "tag": "wireguard"
-    },
-    {
-      "protocol": "blackhole",
-      "tag": "block"
-    }
-  ]
-}
+      {
+        "protocol": "freedom",
+        "streamSettings": {
+          "sockopt": {
+            "domainStrategy": "UseIPv6",
+            "dialerProxy": "wireguard"
+          }
+        },
+        "tag": "w6"
+      },
+      {
+        "protocol": "wireguard",
+        "settings": {
+          "secretKey": "$PRIVATE_KEY_WIREGUARD",
+          "address": [
+            "$IPV4_ADDRESS",
+            "$IPV6_ADDRESS"
+          ],
+          "peers": [
+            {
+              "publicKey": "$PUBLIC_KEY_WIREGUARD",
+              "allowedIPs": [
+                "0.0.0.0/0",
+                "::/0"
+              ],
+              "endpoint": "$ENDPOINT"
+            }
+          ],
+          "reserved": [
+            "$RESERVED_VALUES"
+          ],
+          "mtu": 1280
+        },
+        "tag": "wireguard"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "block"
+      }
+    ]
+  }
+]
