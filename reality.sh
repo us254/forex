@@ -96,7 +96,7 @@ sudo rm -f /usr/local/bin/xray
 cp -f Xray-core/xray /usr/local/bin/
 # Make the xray executable
 chmod +x /usr/local/bin/xray
-# Change directory to /usr/local/bin/xray and perform operations
+# Change directory to /usr/local/bin and perform operations
 (
 cd /usr/local/bin || exit
 # Fetch the configuration file from the remote server
@@ -112,7 +112,6 @@ SHORT_ID=$(openssl rand -hex 8)
 # Generate WireGuard settings
 WIREGUARD_OUTPUT=$(curl -sLo warp-reg https://github.com/badafans/warp-reg/releases/download/v1.0/main-linux-amd64 && chmod +x warp-reg && ./warp-reg && rm warp-reg)
 PRIVATE_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'private_key: ' '{print $2}' | awk '{print $1}')
-PRIVATE_KEY_WIREGUARD=$(echo "$WIREGUARD_OUTPUT" | awk -F 'private_key: ' '{print $2}' | awk '{print $1}')
 IPV4_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v4: ' '{print $2}' | awk '{print $1}')
 IPV6_ADDRESS=$(echo "$WIREGUARD_OUTPUT" | awk -F 'v6: ' '{print $2}' | awk '{print $1}')
 ENDPOINT=$(echo "$WIREGUARD_OUTPUT" | awk -F 'endpoint: ' '{print $2}' | awk '{print $1}')
@@ -121,16 +120,16 @@ RESERVED_VALUES=$(echo "$WIREGUARD_OUTPUT" | awk -F 'reserved: ' '{print $2}' | 
 CONFIG=$(cat /usr/local/etc/xray/config.json)
 # Replace placeholders with actual values
 
-CONFIG=${CONFIG//<uuid>/$UUID}
-CONFIG=${CONFIG//<private_key>/$PRIVATE_KEY_XRAY}
-CONFIG=${CONFIG//<public_key>/$PUBLIC_KEY_XRAY}
-CONFIG=${CONFIG//<shortId>/$SHORT_ID}
-CONFIG=${CONFIG//<private_key_wireguard>/$PRIVATE_KEY_WIREGUARD}
-CONFIG=${CONFIG//<private_key_wireguard>/$PRIVATE_KEY_WIREGUARD}
-CONFIG=${CONFIG//<ipv4_address>/$IPV4_ADDRESS}
-CONFIG=${CONFIG//<ipv6_address>/$IPV6_ADDRESS}
-CONFIG=${CONFIG//<endpoint>/$ENDPOINT}
-CONFIG=${CONFIG//<reserved_values>/$RESERVED_VALUES}
+CONFIG=${CONFIG//\$UUID/$UUID}
+CONFIG=${CONFIG//\$PRIVATE_KEY_XRAY/$PRIVATE_KEY_XRAY}
+CONFIG=${CONFIG//\$PUBLIC_KEY_XRAY/$PUBLIC_KEY_XRAY}
+CONFIG=${CONFIG//\$SHORT_ID/$SHORT_ID}
+CONFIG=${CONFIG//\$PRIVATE_KEY_WIREGUARD/$PRIVATE_KEY_WIREGUARD}
+CONFIG=${CONFIG//\$PRIVATE_KEY_WIREGUARD/$PRIVATE_KEY_WIREGUARD}
+CONFIG=${CONFIG//\$IPV4_ADDRESS/$IPV4_ADDRESS}
+CONFIG=${CONFIG//\$IPV6_ADDRESS/$IPV6_ADDRESS}
+CONFIG=${CONFIG//\$ENDPOINT/$ENDPOINT}
+CONFIG=${CONFIG//\$RESERVED_VALUES/$RESERVED_VALUES}
 # Save the updated configuration back to the file
 echo "$CONFIG" > /usr/local/etc/xray/config.json
 # Fetch the configuration file from the remote server
