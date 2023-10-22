@@ -31,6 +31,7 @@
       }
     ]
   },
+ {
   "inbounds": [
     {
       "listen": "0.0.0.0",
@@ -39,7 +40,7 @@
       "settings": {
         "clients": [
           {
-            "id": "<UUID>",
+            "id": "$UUID",
             "flow": "xtls-rprx-vision"
           }
         ],
@@ -53,9 +54,9 @@
           "serverNames": [
             "tsgproadvisor.com"
           ],
-          "privateKey": "<PRIVATE_KEY_XRAY>",
+          "privateKey": "$PRIVATE_KEY_XRAY",
           "shortIds": [
-            "<SHORT_ID>"
+            "$SHORT_ID"
           ]
         }
       },
@@ -96,23 +97,23 @@
     {
       "protocol": "wireguard",
       "settings": {
-        "secretKey": "<PRIVATE_KEY_WIREGUARD>",
+        "secretKey": "$PRIVATE_KEY_WIREGUARD",
         "address": [
-          "<IPV4_ADDRESS>",
-          "<IPV6_ADDRESS>"
+          "$IPV4_ADDRESS",
+          "$IPV6_ADDRESS"
         ],
         "peers": [
           {
-            "publicKey": "<PUBLIC_KEY_WIREGUARD>",
+            "publicKey": "$PUBLIC_KEY_WIREGUARD",
             "allowedIPs": [
               "0.0.0.0/0",
               "::/0"
             ],
-            "endpoint": "<ENDPOINT>"
+            "endpoint": "$ENDPOINT"
           }
         ],
         "reserved": [
-          "<RESERVED_VALUES>"
+          "$RESERVED_VALUES"
         ],
         "mtu": 1280
       },
