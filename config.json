@@ -101,7 +101,7 @@
         "settings": {
           "secretKey": "$PRIVATE_KEY_WIREGUARD",
           "address": [
-            "$IPV4_ADDRESS"/32,
+            "$IPV4_ADDRESS/32",
             "$IPV6_ADDRESS/128"
           ],
           "peers": [
